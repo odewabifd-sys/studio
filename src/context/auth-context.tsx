@@ -2,11 +2,16 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { auth, db } from '@/lib/firebase';
+import { doc, getDoc } from "firebase/firestore";
 import { Skeleton } from '@/components/ui/skeleton';
 
+type AppUser = User & {
+    userType?: 'customer' | 'artisan';
+};
+
 type AuthContextType = {
-  user: User | null;
+  user: AppUser | null;
   loading: boolean;
 };
 
@@ -16,12 +21,23 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AppUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userDocRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          setUser({ ...user, userType: userData.userType });
+        } else {
+          setUser(user);
+        }
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     });
 

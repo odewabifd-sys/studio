@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
-import { Menu, User, LogOut } from 'lucide-react';
+import { Menu, User, LogOut, LayoutDashboard } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { useAuth } from '@/context/auth-context';
 import { auth } from '@/lib/firebase';
@@ -70,6 +70,12 @@ export default function Header() {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
+                {user.userType === 'artisan' && (
+                   <DropdownMenuItem onClick={() => router.push('/dashboard/artisan')}>
+                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                    <span>Dashboard</span>
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem onClick={handleSignOut}>
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Log out</span>
@@ -112,7 +118,14 @@ export default function Header() {
                 </div>
                 <div className="grid gap-2">
                   {user ? (
-                     <Button onClick={handleSignOut}>Logout</Button>
+                    <>
+                     {user.userType === 'artisan' && (
+                        <SheetClose asChild>
+                          <Button onClick={() => router.push('/dashboard/artisan')} variant="outline">Dashboard</Button>
+                        </SheetClose>
+                      )}
+                      <Button onClick={handleSignOut}>Logout</Button>
+                    </>
                   ) : (
                     <>
                     <SheetClose asChild>

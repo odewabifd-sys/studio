@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { auth, db } from '@/lib/firebase';
+import { doc, setDoc } from "firebase/firestore"; 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -29,8 +30,19 @@ export default function SignupPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      // You can also save the first name, last name and user type to your database here.
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Save user info to Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        firstName,
+        lastName,
+        email,
+        userType,
+        createdAt: new Date(),
+      });
+
       router.push('/');
     } catch (error: any) {
       toast({
