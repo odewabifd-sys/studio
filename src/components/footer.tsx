@@ -37,7 +37,7 @@ export default function Footer() {
                 <Link href="/search" className="text-muted-foreground hover:text-primary text-sm">Find an Artisan</Link>
                 <Link href="#" className="text-muted-foreground hover:text-primary text-sm">How it Works</Link>
                 <Link href="/support" className="text-muted-foreground hover:text-primary text-sm">Customer Support</Link>
-                <Link href="#" className="text-muted-foreground hover:text-primary text-sm">Safety</Link>
+                <Link href="/faq" className="text-muted-foreground hover:text-primary text-sm">FAQs</Link>
               </div>
             </div>
             <div>
