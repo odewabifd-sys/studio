@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { Star, MapPin, Phone, MessageSquare, CheckBadge } from 'lucide-react';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
@@ -70,7 +71,7 @@ export default async function ArtisanProfilePage({ params }: { params: { id: str
                 </div>
                 <div className="sm:ml-auto flex gap-2">
                   <Button variant="outline"><MessageSquare className="mr-2 h-4 w-4" /> Message</Button>
-                  <Button><Phone className="mr-2 h-4 w-4" /> Book Now</Button>
+                   <Button asChild><Link href="/checkout"><Phone className="mr-2 h-4 w-4" /> Book Now</Link></Button>
                 </div>
               </div>
             </div>
