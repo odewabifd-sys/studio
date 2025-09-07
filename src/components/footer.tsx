@@ -18,12 +18,13 @@ export default function Footer() {
               <Link href="#" className="text-muted-foreground hover:text-primary"><Instagram className="h-5 w-5"/></Link>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-8 md:col-span-2">
+          <div className="grid grid-cols-2 md:col-span-2">
             <div>
               <h4 className="font-semibold mb-2">For Customers</h4>
               <div className="flex flex-col gap-2">
                 <Link href="/search" className="text-muted-foreground hover:text-primary text-sm">Find an Artisan</Link>
                 <Link href="#" className="text-muted-foreground hover:text-primary text-sm">How it Works</Link>
+                <Link href="/support" className="text-muted-foreground hover:text-primary text-sm">Customer Support</Link>
                 <Link href="#" className="text-muted-foreground hover:text-primary text-sm">Safety</Link>
               </div>
             </div>
