@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { AuthProvider } from '@/context/auth-context';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://menda.com'),
   title: 'Menda',
   description: 'Connect with skilled artisans in Nigeria for your service needs.',
   keywords: 'artisans, Nigeria, plumber, electrician, carpenter, services marketplace',
