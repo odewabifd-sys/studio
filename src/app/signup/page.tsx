@@ -16,6 +16,7 @@ import { SocialButtons } from '@/components/social-buttons';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -25,6 +26,7 @@ export default function SignupPage() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [userType, setUserType] = useState('customer');
+  const [marketingConsent, setMarketingConsent] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
@@ -48,6 +50,7 @@ export default function SignupPage() {
         lastName,
         email,
         userType,
+        marketingConsent,
         createdAt: new Date(),
       });
 
@@ -106,6 +109,15 @@ export default function SignupPage() {
                             <Label htmlFor="r2">Artisan</Label>
                         </div>
                     </RadioGroup>
+                </div>
+                 <div className="flex items-center space-x-2">
+                    <Checkbox id="marketing-consent" checked={marketingConsent} onCheckedChange={(checked) => setMarketingConsent(!!checked)} />
+                    <label
+                        htmlFor="marketing-consent"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                        Receive marketing emails from Mendamart.
+                    </label>
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
                     {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
