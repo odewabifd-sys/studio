@@ -52,8 +52,8 @@ export default function Footer() {
         </div>
         <div className="mt-8 pt-8 border-t text-center text-muted-foreground text-sm">
           © {new Date().getFullYear()} Menda. All rights reserved. 
-          <Link href="#" className="ml-4 hover:text-primary">Terms of Service</Link>
-          <Link href="#" className="ml-4 hover:text-primary">Privacy Policy</Link>
+          <Link href="/terms" className="ml-4 hover:text-primary">Terms of Service</Link>
+          <Link href="/privacy" className="ml-4 hover:text-primary">Privacy Policy</Link>
         </div>
       </div>
     </footer>
