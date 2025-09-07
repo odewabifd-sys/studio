@@ -38,7 +38,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 pt-8 border-t text-center text-muted-foreground text-sm">
-          © {new Date().getFullYear()} Artisan Connect. All rights reserved. 
+          © {new Date().getFullYear()} Menda. All rights reserved. 
           <Link href="#" className="ml-4 hover:text-primary">Terms of Service</Link>
           <Link href="#" className="ml-4 hover:text-primary">Privacy Policy</Link>
         </div>
