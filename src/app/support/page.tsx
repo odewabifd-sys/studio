@@ -60,7 +60,7 @@ export default function SupportPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Bot />
-              Menda Support
+              Mendamart Support
             </CardTitle>
           </CardHeader>
           <CardContent className="flex-grow overflow-hidden">

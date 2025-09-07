@@ -46,7 +46,7 @@ const prompt = ai.definePrompt({
   name: 'invoiceGeneratorPrompt',
   input: {schema: GenerateInvoiceInputSchema},
   output: {schema: GenerateInvoiceOutputSchema},
-  prompt: `You are an invoicing assistant for Menda. Your task is to generate a professional invoice body based on the provided details.
+  prompt: `You are an invoicing assistant for Mendamart. Your task is to generate a professional invoice body based on the provided details.
 
   The invoice body should be a simple, well-formatted text string. Start with a brief summary of the service, then present a clean, aligned table of the line items with columns for Description, Qty, Unit Price, and Total. Do not use markdown tables. Use spaces to align the columns. Finally, confirm the payment method.
   

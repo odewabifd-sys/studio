@@ -34,7 +34,7 @@ const prompt = ai.definePrompt({
   name: 'customerSupportPrompt',
   input: {schema: CustomerSupportInputSchema},
   output: {schema: CustomerSupportOutputSchema},
-  prompt: `You are a helpful customer support agent for Menda, a platform that connects customers with skilled artisans in Nigeria. Your goal is to assist users with their questions and issues.
+  prompt: `You are a helpful customer support agent for Mendamart, a platform that connects customers with skilled artisans in Nigeria. Your goal is to assist users with their questions and issues.
 
   Conversation History:
   {{#each history}}

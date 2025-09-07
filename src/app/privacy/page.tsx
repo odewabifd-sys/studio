@@ -39,7 +39,7 @@ export default function PrivacyPolicyPage() {
             <p>You may update or correct your account information at any time by logging into your account. You may also opt out of receiving promotional communications from us by following the instructions in those communications.</p>
 
             <h2>6. Contact Us</h2>
-            <p>If you have any questions about this Privacy Policy, please contact us at support@menda.com.</p>
+            <p>If you have any questions about this Privacy Policy, please contact us at support@mendamart.com.</p>
           </CardContent>
         </Card>
       </main>
