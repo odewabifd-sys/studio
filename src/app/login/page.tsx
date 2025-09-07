@@ -1,3 +1,4 @@
+
 'use client';
 import Link from 'next/link';
 import { useState, FormEvent } from 'react';
@@ -12,6 +13,8 @@ import { Logo } from '@/components/logo';
 import { SocialButtons } from '@/components/social-buttons';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Terminal } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,12 +22,24 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showVerificationAlert, setShowVerificationAlert] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setShowVerificationAlert(false);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      if (!userCredential.user.emailVerified) {
+        toast({
+            variant: 'destructive',
+            title: 'Email Not Verified',
+            description: 'Please check your email and click the verification link to login.',
+        });
+        setShowVerificationAlert(true);
+        setLoading(false);
+        return;
+      }
       router.push('/');
     } catch (error: any) {
       toast({
@@ -48,6 +63,15 @@ export default function LoginPage() {
             <CardDescription>Enter your email below to login to your account.</CardDescription>
           </CardHeader>
           <CardContent>
+            {showVerificationAlert && (
+                 <Alert variant="destructive" className="mb-4">
+                    <Terminal className="h-4 w-4" />
+                    <AlertTitle>Email Verification Required</AlertTitle>
+                    <AlertDescription>
+                        Please check your inbox and click the verification link we sent you to complete your signup.
+                    </AlertDescription>
+                </Alert>
+            )}
             <form onSubmit={handleSubmit} className="grid gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>

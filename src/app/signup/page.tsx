@@ -1,9 +1,10 @@
+
 'use client';
 
 import Link from 'next/link';
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { auth, db } from '@/lib/firebase';
 import { doc, setDoc } from "firebase/firestore"; 
 import { Button } from '@/components/ui/button';
@@ -33,6 +34,13 @@ export default function SignupPage() {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
+      // Send verification email
+      await sendEmailVerification(user);
+      toast({
+        title: 'Verification Email Sent',
+        description: 'A verification link has been sent to your email address. Please verify to continue.',
+      });
+
       // Save user info to Firestore
       await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
@@ -43,7 +51,7 @@ export default function SignupPage() {
         createdAt: new Date(),
       });
 
-      router.push('/');
+      router.push('/login');
     } catch (error: any) {
       toast({
         variant: 'destructive',
