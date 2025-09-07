@@ -9,6 +9,8 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { db } from '@/lib/firebase';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
 const SearchAndRankArtisansInputSchema = z.object({
   category: z.string().describe('The category of artisan to search for (e.g., plumber, electrician).'),
@@ -24,6 +26,7 @@ const ArtisanSchema = z.object({
   rating: z.number().describe('The average rating of the artisan (1-5).'),
   availability: z.boolean().describe('Whether the artisan is currently available for work.'),
   bio: z.string().optional().describe('A short biography of the artisan.'),
+  category: z.string().optional().describe('The primary category of the artisan.'),
 });
 
 const SearchAndRankArtisansOutputSchema = z.array(ArtisanSchema).describe('A list of artisans ranked by relevance, availability, and customer reviews.');
@@ -66,40 +69,27 @@ const searchAndRankArtisansFlow = ai.defineFlow(
     outputSchema: SearchAndRankArtisansOutputSchema,
   },
   async input => {
-    // Mock artisan data (replace with actual data fetching from Firestore)
-    const mockArtisans = [
-      {
-        id: '1',
-        name: 'John Doe',
-        skills: ['plumbing', 'pipe fitting', 'drain cleaning'],
-        location: 'Lagos',
-        rating: 4.5,
-        availability: true,
-        bio: 'Experienced plumber with 10+ years of experience.',
-      },
-      {
-        id: '2',
-        name: 'Jane Smith',
-        skills: ['electrical wiring', 'lighting', 'power outlets'],
-        location: 'Lagos',
-        rating: 4.8,
-        availability: false,
-        bio: 'Certified electrician specializing in residential installations.',
-      },
-      {
-        id: '3',
-        name: 'David Lee',
-        skills: ['carpentry', 'furniture repair', 'woodworking'],
-        location: 'Abuja',
-        rating: 4.2,
-        availability: true,
-        bio: 'Professional carpenter crafting custom furniture.',
-      },
-    ];
+    // Fetch artisans from Firestore
+    const artisansCol = collection(db, 'users');
+    const q = query(artisansCol, where("userType", "==", "artisan"));
+    const artisanSnapshot = await getDocs(q);
+    const artisansList = artisanSnapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        name: `${data.firstName} ${data.lastName}`,
+        skills: data.skills || [], // Assuming artisans have a 'skills' field
+        location: data.location || 'Unknown', // Assuming artisans have a 'location' field
+        rating: data.rating || 0, // Assuming a 'rating' field
+        availability: data.availability !== undefined ? data.availability : true, // Defaulting to available
+        bio: data.bio || '',
+        category: data.category || '',
+      };
+    });
 
     const {output} = await artisanRankingPrompt({
       ...input,
-      artisans: mockArtisans,
+      artisans: artisansList,
     });
     return output!;
   }
