@@ -27,12 +27,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const userDocRef = doc(db, "users", user.uid);
-        const userDoc = await getDoc(userDocRef);
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          setUser({ ...user, userType: userData.userType });
-        } else {
+        try {
+          const userDocRef = doc(db, "users", user.uid);
+          const userDoc = await getDoc(userDocRef);
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            setUser({ ...user, userType: userData.userType });
+          } else {
+            // This case might happen if the user document hasn't been created yet.
+            // We'll set the user without the custom userType for now.
+            setUser(user); 
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          // If we fail to fetch (e.g., offline), we can still set the basic user object
           setUser(user);
         }
       } else {
