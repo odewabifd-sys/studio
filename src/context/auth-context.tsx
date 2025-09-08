@@ -41,6 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         } catch (error) {
           console.error("Error fetching user data:", error);
           // If we fail to fetch (e.g., offline), we can still set the basic user object
+          // to allow the app to function without crashing.
           setUser(user);
         }
       } else {
