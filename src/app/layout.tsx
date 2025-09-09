@@ -4,6 +4,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from '@/lib/utils';
 import { AuthProvider } from '@/context/auth-context';
+import AuthProviderClient from '@/context/auth-provider-client';
 
 export const metadata: Metadata = {
     title: 'Mendamart',
@@ -25,7 +26,9 @@ export default function RootLayout({
       </head>
       <body className={cn("font-body antialiased")}>
         <AuthProvider>
-          {children}
+          <AuthProviderClient>
+            {children}
+          </AuthProviderClient>
         </AuthProvider>
         <Toaster />
       </body>

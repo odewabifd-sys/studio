@@ -14,7 +14,7 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
-// Initialize Firebase for client-side
+// Initialize Firebase for client-side only
 let app: FirebaseApp | null = null;
 let auth: Auth | null = null;
 let db: Firestore | null = null;
@@ -27,16 +27,17 @@ if (typeof window !== 'undefined') {
   }
 
   if (app) {
-    auth = getAuth(app);
-    db = getFirestore(app);
-    enableIndexedDbPersistence(db)
-      .catch((err) => {
-        if (err.code == 'failed-precondition') {
-          console.warn('Firestore persistence failed: Multiple tabs open.');
-        } else if (err.code == 'unimplemented') {
-          console.warn('Firestore persistence not available in this browser.');
-        }
-      });
+      auth = getAuth(app);
+      db = getFirestore(app);
+      
+      enableIndexedDbPersistence(db)
+        .catch((err) => {
+          if (err.code == 'failed-precondition') {
+            console.warn('Firestore persistence failed: Multiple tabs open.');
+          } else if (err.code == 'unimplemented') {
+            console.warn('Firestore persistence not available in this browser.');
+          }
+        });
   }
 }
 
