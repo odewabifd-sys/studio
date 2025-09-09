@@ -1,3 +1,4 @@
+
 'use client';
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
@@ -34,14 +35,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             const userData = userDoc.data();
             setUser({ ...user, userType: userData.userType });
           } else {
-            // This case might happen if the user document hasn't been created yet.
-            // We'll set the user without the custom userType for now.
             setUser(user); 
           }
         } catch (error) {
           console.error("Error fetching user data:", error);
           // If we fail to fetch (e.g., offline), we can still set the basic user object
-          // to allow the app to function without crashing.
           setUser(user);
         }
       } else {
