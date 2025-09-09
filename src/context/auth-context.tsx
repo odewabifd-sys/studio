@@ -26,11 +26,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // auth and db can be null if firebase fails to initialize
+    // auth and db can be null if firebase fails to initialize or on the server
     if (!auth || !db) {
-      setLoading(false);
+      setLoading(false); // Stop loading if Firebase is not available
       return;
     }
+
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         try {
@@ -44,7 +45,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           }
         } catch (error) {
           console.error("Error fetching user data:", error);
-          setUser(user);
+          setUser(user); // Set basic user info even if firestore fails
         }
       } else {
         setUser(null);
@@ -55,27 +56,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => unsubscribe();
   }, []);
 
-  if (loading) {
-    return (
-        <div className="flex flex-col min-h-screen">
-            <div className="flex h-16 items-center container">
-                <Skeleton className="h-7 w-24" />
-                <div className="ml-10 hidden md:flex items-center gap-6">
-                    <Skeleton className="h-4 w-24" />
-                    <Skeleton className="h-4 w-32" />
-                </div>
-                <div className="ml-auto hidden md:flex items-center gap-2">
-                    <Skeleton className="h-10 w-20" />
-                    <Skeleton className="h-10 w-20" />
-                </div>
-            </div>
-            <main className="flex-grow flex items-center justify-center">
-                <Skeleton className="h-96 w-full max-w-md" />
-            </main>
-        </div>
-    );
-  }
-
   return (
     <AuthContext.Provider value={{ user, loading }}>
       {children}
@@ -84,3 +64,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
+
+export const AuthLoader = ({ children }: { children: ReactNode }) => {
+    const { loading } = useAuth();
+    if (loading) {
+        return (
+            <div className="flex flex-col min-h-screen">
+                <div className="flex h-16 items-center container border-b">
+                    <Skeleton className="h-7 w-24" />
+                    <div className="ml-10 hidden md:flex items-center gap-6">
+                        <Skeleton className="h-4 w-24" />
+                        <Skeleton className="h-4 w-32" />
+                    </div>
+                    <div className="ml-auto hidden md:flex items-center gap-2">
+                        <Skeleton className="h-10 w-20" />
+                        <Skeleton className="h-10 w-20" />
+                    </div>
+                </div>
+                <main className="flex-grow flex items-center justify-center">
+                    <Skeleton className="h-96 w-full max-w-lg" />
+                </main>
+            </div>
+        );
+    }
+    return children;
+}
