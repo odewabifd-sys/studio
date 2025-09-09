@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from '@/lib/utils';
-import { AuthProvider, AuthLoader } from '@/context/auth-context';
+import { AuthProvider } from '@/context/auth-context';
 
 export const metadata: Metadata = {
     title: 'Mendamart',
@@ -25,9 +25,7 @@ export default function RootLayout({
       </head>
       <body className={cn("font-body antialiased")}>
         <AuthProvider>
-          <AuthLoader>
-            {children}
-          </AuthLoader>
+          {children}
         </AuthProvider>
         <Toaster />
       </body>
