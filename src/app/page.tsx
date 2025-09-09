@@ -56,15 +56,15 @@ function HeroSection() {
           From plumbing to electrical work, connect with trusted and verified professionals for your home and office needs.
         </p>
         <form onSubmit={handleSearch} className="mt-8 max-w-2xl mx-auto flex flex-col md:flex-row gap-2 bg-white p-2 rounded-lg shadow-lg">
-          <div className="flex-1 flex items-center">
+          <div className="flex-1 flex items-center" suppressHydrationWarning>
             <Search className="h-5 w-5 text-muted-foreground mx-2" />
             <Input name="category" type="text" placeholder="What service do you need? e.g. Electrician" className="border-0 focus-visible:ring-0 text-foreground" required />
           </div>
-          <div className="flex-1 flex items-center">
+          <div className="flex-1 flex items-center" suppressHydrationWarning>
             <MapPin className="h-5 w-5 text-muted-foreground mx-2" />
             <Input name="location" type="text" placeholder="e.g. Lagos, Nigeria" className="border-0 focus-visible:ring-0 text-foreground" required />
           </div>
-          <Button type="submit" size="lg" className="w-full md:w-auto">
+          <Button type="submit" size="lg" className="w-full md:w-auto" suppressHydrationWarning>
             <Search className="h-5 w-5 mr-2" />
             Search
           </Button>
