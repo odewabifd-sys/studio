@@ -68,10 +68,13 @@ const searchAndRankArtisansFlow = ai.defineFlow(
     inputSchema: SearchAndRankArtisansInputSchema,
     outputSchema: SearchAndRankArtisansOutputSchema,
   },
-  async input => {
+  async (input) => {
+    // Moved Firestore logic inside the flow to prevent execution during build time.
     if (!db) {
-        throw new Error("Firestore is not initialized");
+      console.error("Firestore is not initialized. This function should not be called during the build process.");
+      return []; // Return empty or throw an error, depending on desired behavior at runtime.
     }
+    
     // Fetch artisans from Firestore
     const artisansCol = collection(db, 'users');
     const q = query(artisansCol, where("userType", "==", "artisan"));
