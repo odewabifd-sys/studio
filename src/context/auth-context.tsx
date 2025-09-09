@@ -17,14 +17,15 @@ export const AuthContext = createContext<AuthContextType>({
   loading: true,
 });
 
+// This is a wrapper component that will be used to provide the context to the app.
+// The actual logic is in AuthProviderClient.
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  // This is a placeholder provider that does nothing.
-  // The actual logic is in AuthProviderClient.
   return (
     <AuthContext.Provider value={{ user: null, loading: true }}>
         {children}
     </AuthContext.Provider>
   );
 };
+
 
 export const useAuth = () => useContext(AuthContext);
