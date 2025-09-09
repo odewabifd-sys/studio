@@ -32,6 +32,17 @@ export default function SignupPage() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
+    if (!auth || !db) {
+        toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Firebase not initialized. Please try again later.',
+        });
+        setLoading(false);
+        return;
+    }
+
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;

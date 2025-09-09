@@ -28,6 +28,17 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setShowVerificationAlert(false);
+
+    if (!auth) {
+        toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Firebase not initialized. Please try again later.',
+        });
+        setLoading(false);
+        return;
+    }
+
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       if (!userCredential.user.emailVerified) {

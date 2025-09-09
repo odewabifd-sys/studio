@@ -69,6 +69,9 @@ const searchAndRankArtisansFlow = ai.defineFlow(
     outputSchema: SearchAndRankArtisansOutputSchema,
   },
   async input => {
+    if (!db) {
+        throw new Error("Firestore is not initialized");
+    }
     // Fetch artisans from Firestore
     const artisansCol = collection(db, 'users');
     const q = query(artisansCol, where("userType", "==", "artisan"));
